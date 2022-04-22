@@ -15,6 +15,9 @@
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>11</java.version>
+		<package.project>com.lmc.contractfirst</package.project>
+		<api.expose>src/main/resources/swagger/expose/api.yaml</api.expose>
+		<api.client>src/main/resources/swagger/api.yaml</api.client>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -22,39 +25,10 @@
 			<artifactId>spring-boot-starter</artifactId>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/io.swagger.core.v3/swagger-annotations -->
-		<dependency>
-			<groupId>io.swagger.core.v3</groupId>
-			<artifactId>swagger-annotations</artifactId>
-			<version>2.1.12</version>
-		</dependency>
-
 		<!-- https://mvnrepository.com/artifact/javax.validation/validation-api -->
 		<dependency>
 			<groupId>javax.validation</groupId>
 			<artifactId>validation-api</artifactId>
-			<version>2.0.1.Final</version>
-		</dependency>
-
-		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-core</artifactId>
-			<version>2.13.1</version>
-		</dependency>
-
-		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-databind</artifactId>
-			<version>2.13.1</version>
-		</dependency>
-
-		<!-- https://mvnrepository.com/artifact/org.springframework/spring-web -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-web</artifactId>
-			<version>5.3.15</version>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/javax.servlet/servlet-api -->
@@ -65,6 +39,17 @@
 			<scope>provided</scope>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.springframework/spring-web -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>io.springfox</groupId>
@@ -76,6 +61,7 @@
 			<artifactId>springfox-swagger-ui</artifactId>
 			<version>2.9.2</version>
 		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -99,22 +85,22 @@
 			</plugin>
 
 			<plugin>
-				<groupId>io.swagger.codegen.v3</groupId>
+				<groupId>io.swagger</groupId>
 				<artifactId>swagger-codegen-maven-plugin</artifactId>
-				<version>3.0.31</version>
+				<version>2.4.9</version>
 				<executions>
 					<execution>
-						<id>api-client</id>
+						<id>generate-provider-service-interface</id>
 						<phase>generate-resources</phase>
 						<goals>
 							<goal>generate</goal>
 						</goals>
 						<configuration>
-							<inputSpec>${project.basedir}/src/main/resources/api.yaml</inputSpec>
+							<inputSpec>${api.expose}</inputSpec>
 							<language>spring</language>
 							<library>spring-boot</library>
-							<modelPackage>com.lmc.contractfirst.provider.presentation.representation</modelPackage>
-							<apiPackage>com.lmc.contractfirst.provider.api</apiPackage>
+							<modelPackage>${package.project}.provider.presentation.representation</modelPackage>
+							<apiPackage>${package.project}.provider.api</apiPackage>
 							<configOptions>
 								<delegatePattern>true</delegatePattern>
 								<interfaceOnly>true</interfaceOnly>
@@ -123,6 +109,29 @@
 							<modelNameSuffix>Representation</modelNameSuffix>
 							<generateSupportingFiles>false</generateSupportingFiles>
 							<generateApiTests>false</generateApiTests>
+						</configuration>
+					</execution>
+					<execution>
+						<id>api-client</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<inputSpec>${api.client}</inputSpec>
+							<language>java</language>
+							<library>resttemplate</library>
+							<modelPackage>${package.project}.rest.pets.representation</modelPackage>
+							<apiPackage>${package.project}.rest.pets.api</apiPackage>
+							<invokerPackage>${package.project}.rest.pets</invokerPackage>
+							<configOptions>
+								<dateLibrary>java8</dateLibrary>
+							</configOptions>
+							<generateSupportingFiles>false</generateSupportingFiles>
+							<generateApiTests>false</generateApiTests>
+							<environmentVariables>
+								<supportingFiles>ApiClient.java,Authentication.java,OAuth.java,ApiKeyAuth.java,HttpBasicAuth.java,RFC3339DateFormat.java</supportingFiles>
+							</environmentVariables>
 						</configuration>
 					</execution>
 				</executions>
