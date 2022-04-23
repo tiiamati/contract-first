@@ -1,0 +1,26 @@
+
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  datasource:
+    url: ${DATASOURCE_URL:jdbc:mysql://localhost:3306/invoice-local}
+    username: ${DATASOURCE_USERNAME:root}
+    password: ${DATASOURCE_PASSWORD:Provider@123}
+    driver-class-name: ${DATASOURCE_DRIVER:com.mysql.cj.jdbc.Driver}
+    hikari:
+      maximum-pool-size: 2
+      minimum-idle: 1
+      max-lifetime: 3600000
+      auto-commit: true
+  jpa:
+    generate-ddl: true
+    properties:
+      hibernate:
+        dialect: ${JPA_HIBERNATE_DIALECT:org.hibernate.dialect.MySQL5InnoDBDialect}
+        ddl-auto: ${JPA_HIBERNATE_DLL_AUTO:create-drop}
+security:
+  username: usuario
+  password: senha

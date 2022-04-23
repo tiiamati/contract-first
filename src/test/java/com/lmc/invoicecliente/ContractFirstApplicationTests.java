@@ -1,4 +1,4 @@
-package com.lmc.contractfirst;
+package com.lmc.invoicecliente;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

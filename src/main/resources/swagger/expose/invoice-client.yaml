@@ -1,0 +1,88 @@
+swagger: "2.0"
+info:
+  description: "Projeto para gerenciamento de clientes"
+  version: "1.0.0"
+  title: "Invoice Client"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    email: "apiteam@swagger.io"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "invoice-client.swagger.io"
+basePath: "/v1"
+schemes:
+  - "https"
+paths:
+  /clients/{client_id}:
+    get:
+      tags:
+        - "clients"
+      summary: "Finds Client by id"
+      description: "Busca na base o cliente com o id informado"
+      operationId: "findClientById"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "client_id"
+          in: "path"
+          description: "Id do cliente"
+          required: true
+          type: "integer"
+          format: "int64"
+      responses:
+        "200":
+          description: "Successful Operation"
+          schema:
+            $ref: "#/definitions/ClientResponse"
+        "400":
+          description: "Bad Request"
+        "401":
+          description: "Unauthorized"
+        "404":
+          description: "Not Found"
+        "500":
+          description: "Internal Server Error"
+          schema:
+            $ref: "#/definitions/ClientResponse"
+      security:
+        - basicAuth: []
+securityDefinitions:
+  basicAuth:
+    type: "basic"
+definitions:
+  ClientResponse:
+    type: "object"
+    properties:
+      client:
+        $ref: "#/definitions/Client"
+      apiResponse:
+        $ref: "#/definitions/ApiResponse"
+  Client:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      name:
+        type: "string"
+      email:
+        type: "string"
+      password:
+        type: "string"
+      active:
+        type: "boolean"
+        description: "Status do usuário, true=ativo/false=inativo"
+  ApiResponse:
+    type: "object"
+    properties:
+      code:
+        type: "integer"
+        format: "int32"
+      message:
+        type: "string"
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "http://swagger.io"
